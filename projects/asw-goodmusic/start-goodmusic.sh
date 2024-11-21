@@ -4,7 +4,7 @@
 
 echo Running GOODMUSIC 
 
-docker run -d --hostname localhost --name asw-consul --publish 8500:8500 docker.io/hashicorp/consul
+docker run -d --hostname localhost --name asw-consul --network host docker.io/hashicorp/consul
 
 sleep 4 
 
