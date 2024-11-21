@@ -1,0 +1,34 @@
+buildscript {
+  ext {
+    springBootVersion = '3.3.5'
+    springDependencyManagementVersion = '1.1.6'
+  }
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+  }
+}
+
+subprojects {
+
+  apply plugin: 'java'
+  java {
+    toolchain {
+      languageVersion = JavaLanguageVersion.of(21)
+    }
+  }
+	
+  group = 'asw.sentence'
+
+  repositories {
+    mavenCentral()
+  }
+
+  tasks.named('test') {
+    useJUnitPlatform()
+  }
+
+}
+

@@ -1,0 +1,33 @@
+buildscript {
+  ext {
+    springBootVersion = '3.3.4'
+    springDependencyManagementVersion = '1.1.6'
+  }
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+  }
+}
+
+subprojects {
+
+  apply plugin: 'java'
+  java {
+    toolchain {
+      languageVersion = JavaLanguageVersion.of(21)
+    }
+  }
+
+  group = 'asw.kafka'
+
+  repositories {
+    mavenCentral()
+  }
+
+  tasks.named('test') {
+    useJUnitPlatform()
+  }
+
+}
