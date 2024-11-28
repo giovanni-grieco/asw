@@ -1,4 +1,4 @@
-package asw.goodmusic.recensioniseguite.enigmi;
+package asw.goodmusic.recensioniseguite.recensioniclient;
 
 import asw.goodmusic.recensioniseguite.domain.*; 
 
@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientException;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.*; 
 import java.util.stream.*; 
@@ -53,6 +52,22 @@ public class RecensioniRestClientAdapter implements RecensioniClientPort {
             e.printStackTrace();
         }
 		return recensioni; 
+	}
+
+	@Override
+	public Collection<RecensioneBreve> getRecensioniByGeneri(Collection<String> generi){
+		Collection<RecensioneBreve> recensioni = null;
+		Flux<RecensioneBreveResponse> response = loadBalancedWebClient
+				.get()
+				.uri("http://recensioni/cercarecensioni/generi/{generi}", toString(generi))
+				.retrieve()
+				.bodyToFlux(RecensioneBreveResponse.class);
+		try{
+			recensioni = toRecensioni(response.collectList().block());
+		} catch (WebClientException e){
+			e.printStackTrace();
+		}
+		return recensioni;
 	}
 
 	private RecensioneBreve toRecensione(RecensioneBreveResponse response) {
