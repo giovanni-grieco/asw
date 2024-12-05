@@ -11,3 +11,9 @@ sleep 4
 
 docker stop asw-consul 
 docker rm asw-consul 
+docker stop recensioni-DB
+docker rm recensioni-DB
+docker stop connessioni-DB
+docker rm connessioni-DB
+docker stop recensioni-seguite-DB
+docker rm recensioni-seguite-DB

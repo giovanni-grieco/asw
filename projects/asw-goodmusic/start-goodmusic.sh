@@ -5,8 +5,11 @@
 echo Running GOODMUSIC 
 
 docker run -d --hostname localhost --name asw-consul --network host docker.io/hashicorp/consul
+docker run -d --hostname localhost --name recensioni-DB -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=recensioni -d postgres
+docker run -d --hostname localhost --name connessioni-DB -p 5433:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=connessioni -d postgres
+docker run -d --hostname localhost --name recensioni-seguite-DB -p 5434:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=recensioni-seguite -d postgres
 
-sleep 4 
+sleep 4
 
 java -Xms64m -Xmx128m -jar recensioni/build/libs/recensioni.jar &
 java -Xms64m -Xmx128m -jar connessioni/build/libs/connessioni.jar &
