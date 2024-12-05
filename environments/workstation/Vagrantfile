@@ -61,6 +61,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
  
         # pubblicazione di alcune porte sull'host (rimuovere il commento per ogni porta necessaria)
         node.vm.network "forwarded_port", guest: 8080, host: 8080, id: 'http', auto_correct: true
+        node.vm.network "forwarded_port", guest: 8500, host: 8500, auto_correct: true
         # node.vm.network "forwarded_port", guest: 8081, host: 8081, auto_correct: true
         # node.vm.network "forwarded_port", guest: 8082, host: 8082, auto_correct: true
         # node.vm.network "forwarded_port", guest: 8083, host: 8083, auto_correct: true
@@ -75,7 +76,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 		# network configuration (/etc/hosts)
 		node.vm.provision "shell" do |s| 
-			s.inline = ASW_RESOURCES + "util/configure-etc-hosts.sh $1 $2"
+			s.inline ="sudo "+ ASW_RESOURCES + "util/configure-etc-hosts.sh $1 $2"
 			s.args = ["workstation", "10.11.1"]
 		end 
 
