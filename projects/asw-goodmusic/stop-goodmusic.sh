@@ -17,3 +17,4 @@ docker stop connessioni-DB
 docker rm connessioni-DB
 docker stop recensioni-seguite-DB
 docker rm recensioni-seguite-DB
+docker compose down

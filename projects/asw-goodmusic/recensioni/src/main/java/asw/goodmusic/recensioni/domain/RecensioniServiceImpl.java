@@ -3,10 +3,21 @@ package asw.goodmusic.recensioni.domain;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.*; 
+import java.util.*;
+import java.util.logging.Logger;
 
 @Service
 public class RecensioniServiceImpl implements RecensioniService {
+
+
+	private MessagePublisherPort MESSAGE_PUBLISHER_PORT;
+	private final Logger logger = Logger.getLogger(this.getClass().toString());
+	private MessagePublisherPort messagePublisher;
+
+	public void publish(String message) {
+		logger.info("PUBLISHING MESSAGE: " + message);
+		messagePublisher.publish(message);
+	}
 
 	@Autowired
 	private RecensioniRepository recensioniRepository;

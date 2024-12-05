@@ -1,11 +1,15 @@
 package asw.goodmusic.recensioni.domain;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*; 
+import java.util.*;
+import java.util.logging.Logger;
 
 @Service
 public interface RecensioniService {
+
+	public void publish(String message);
 
 	/* Crea una nuova recensione, a partire dai suoi dati. */ 
  	public Recensione createRecensione(String recensore, String album, String artista, String genere, String testo, String sunto); 
