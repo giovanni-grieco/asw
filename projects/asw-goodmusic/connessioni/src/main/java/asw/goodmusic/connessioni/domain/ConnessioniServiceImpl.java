@@ -1,5 +1,7 @@
 package asw.goodmusic.connessioni.domain;
 
+import asw.goodmusic.common.api.messaging.DomainEvent;
+import asw.goodmusic.connessioni.api.messaging.CreatedConnessioneEvent;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,12 +12,23 @@ public class ConnessioniServiceImpl implements ConnessioniService {
 
 	@Autowired
 	private ConnessioniRepository connessioniRepository;
+	@Autowired
+	private ConnessioniEventPublisherPort messagePublisher;
 
 	/* Crea una nuova connessione, dati utente, seguito e ruolo. */ 
  	public Connessione createConnessione(String utente, String seguito, String ruolo) {
 		Connessione connessione = new Connessione(utente, seguito, ruolo); 
 		try {
 			connessione = connessioniRepository.save(connessione);
+
+			DomainEvent event= new CreatedConnessioneEvent(
+					connessione.getId(),
+					connessione.getUtente(),
+					connessione.getSeguito(),
+					connessione.getRuolo()
+			);
+			messagePublisher.publish(event);
+
 			return connessione;
 		} catch(Exception e) {
 			/* si potrebbe verificare un'eccezione se è violato il vincolo di unicità della connessione */ 

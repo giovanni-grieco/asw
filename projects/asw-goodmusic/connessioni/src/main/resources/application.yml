@@ -46,3 +46,8 @@ server:
 #spring.jpa.show-sql: true
 # disable OSIV
 spring.jpa.open-in-view: false
+
+asw:
+  kafka:
+    channel:
+      out: connessioni
