@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 import asw.goodmusic.common.api.messaging.DomainEvent;
 @Component
-public class RecensioniEventKafkaPublisherAdapter implements RecensioniEventPublisherPort {
+public class RecensioniEventPublisherKafkaAdapter implements RecensioniEventPublisherPort {
 
 
 
