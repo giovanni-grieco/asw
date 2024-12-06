@@ -18,7 +18,17 @@ docker exec -it $KAFKA_DOCKER kafka-topics.sh --bootstrap-server localhost:9092 
 
 sleep 4
 
-java -Xms64m -Xmx128m -jar recensioni/build/libs/recensioni.jar &
-java -Xms64m -Xmx128m -jar connessioni/build/libs/connessioni.jar &
-java -Xms64m -Xmx128m -jar recensioni-seguite/build/libs/recensioni-seguite.jar &
-java -Xms64m -Xmx128m -jar api-gateway/build/libs/api-gateway.jar &
+LOGS_FOLDER='logs/'
+mkdir -p $LOGS_FOLDER
+
+RECENSIONI_LOGS=$LOGS_FOLDER'recensioni.logs'
+RECENSIONI_SEGUITE_LOGS=$LOGS_FOLDER'recensioni-seguite.logs'
+CONNESSIONI_LOGS=$LOGS_FOLDER'connessioni.logs'
+API_GATEWAY_LOGS=$LOGS_FOLDER'api-gateway.logs'
+
+echo Starting recensioni
+java -Xms64m -Xmx128m -jar recensioni/build/libs/recensioni.jar >> $RECENSIONI_LOGS &
+echo recensioni logs can be found in
+java -Xms64m -Xmx128m -jar connessioni/build/libs/connessioni.jar >> $CONNESSIONI_LOGS &
+java -Xms64m -Xmx128m -jar recensioni-seguite/build/libs/recensioni-seguite.jar >> $RECENSIONI_SEGUITE_LOGS &
+java -Xms64m -Xmx128m -jar api-gateway/build/libs/api-gateway.jar >> $API_GATEWAY_LOGS &
