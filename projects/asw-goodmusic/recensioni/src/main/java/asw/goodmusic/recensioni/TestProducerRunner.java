@@ -1,21 +1,21 @@
-package asw.goodmusic.recensioni.domain;
+package asw.goodmusic.recensioni;
 
-import org.springframework.stereotype.Component;
-import org.springframework.boot.CommandLineRunner;
+import asw.goodmusic.recensioni.api.messaging.CreatedRecensioneEvent;
+import asw.goodmusic.recensioni.domain.RecensioniEventPublisherPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
-import java.util.logging.*;
+import java.util.logging.Logger;
 
 @Component
-public class ProducerRunner implements CommandLineRunner {
-
-	//TODO da modificare
+public class TestProducerRunner implements CommandLineRunner {
 
 	private final Logger logger = Logger.getLogger(this.getClass().toString());
 
 	@Autowired
-	private RecensioniService recensioniService;
+	private RecensioniEventPublisherPort recensioniService;
 
 	@Value("${asw.kafka.producer.name}")
 	private String producerName;
@@ -29,7 +29,7 @@ public class ProducerRunner implements CommandLineRunner {
 			// String message = "Message #" + i; 
 			String message = String.format("Message from %1$s #%2$d", producerName, i);
 			// logger.info("Sending message: " + message); 
-			recensioniService.publish(message);
+			recensioniService.publish(new CreatedRecensioneEvent());
 		}
 
 	}

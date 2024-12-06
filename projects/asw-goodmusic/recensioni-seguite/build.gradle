@@ -18,6 +18,7 @@ configurations {
 dependencies {
   implementation project(':connessioni-api')
   implementation project(':recensioni-api')
+  implementation project(':common-api')
 
   implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'org.springframework.cloud:spring-cloud-starter'
