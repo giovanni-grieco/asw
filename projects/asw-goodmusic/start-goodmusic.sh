@@ -11,10 +11,10 @@ docker run -d --hostname localhost --name recensioni-seguite-DB -p 5434:5432 -e 
 
 docker compose up -d
 
-KAFKA_DOCKER=$(docker ps | grep kafka | grep -v zookeeper | awk '{print $1}')
+KAFKA_DOCKER=$(docker ps | grep bitnami/kafka | grep -v zookeeper | awk '{print $1}')
 
-docker exec -it $KAFKA_DOCKER kafka-topics.sh --bootstrap-server localhost:9092 --create --topic recensioni --replication-factor 1 --partitions 4
-docker exec -it $KAFKA_DOCKER kafka-topics.sh --bootstrap-server localhost:9092 --create --topic connessioni --replication-factor 1 --partitions 4
+docker exec -it "$KAFKA_DOCKER" kafka-topics.sh --bootstrap-server localhost:9092 --create --topic recensioni --replication-factor 1 --partitions 4
+docker exec -it "$KAFKA_DOCKER" kafka-topics.sh --bootstrap-server localhost:9092 --create --topic connessioni --replication-factor 1 --partitions 4
 
 sleep 4
 

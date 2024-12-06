@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   kafka:
     image: docker.io/bitnami/kafka:3.8
@@ -22,6 +20,17 @@ services:
       # Other settings 
       - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
       - KAFKA_CFG_NUM_PARTITIONS=4
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - "8089:8080"
+    environment:
+      DYNAMIC_CONFIG_ENABLED: 'true'
+      KAFKA_CLUSTERS_0_NAME: "local"
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka:9092"
+    volumes:
+      - ./kafka_ui/:/etc/kafkaui/
 
 volumes:
   kafka_data:

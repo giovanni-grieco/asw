@@ -3,9 +3,11 @@
 spring:
   kafka:
     bootstrap-servers: localhost:9092
+
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      client-id: ${spring.cloud.consul.discovery.instanceId}
   datasource:
     url: jdbc:postgresql://localhost:5432/recensioni
     username: postgres
@@ -49,8 +51,5 @@ spring.jpa.open-in-view: false
 
 asw:
   kafka:
-    producer:
-      name: Producer
-      messages-to-send: 20
     channel:
-      out: asw-alpha
+      out: recensioni

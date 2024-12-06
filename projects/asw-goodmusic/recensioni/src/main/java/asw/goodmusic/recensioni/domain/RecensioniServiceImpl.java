@@ -1,5 +1,7 @@
 package asw.goodmusic.recensioni.domain;
 
+import asw.goodmusic.common.api.messaging.DomainEvent;
+import asw.goodmusic.recensioni.api.messaging.CreatedRecensioneEvent;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,7 +17,6 @@ public class RecensioniServiceImpl implements RecensioniService {
 	@Autowired
 	private RecensioniEventPublisherPort messagePublisher;
 
-
 	@Autowired
 	private RecensioniRepository recensioniRepository;
 
@@ -23,6 +24,18 @@ public class RecensioniServiceImpl implements RecensioniService {
  	public Recensione createRecensione(String recensore, String album, String artista, String genere, String testo, String sunto) {
 		Recensione recensione = new Recensione(recensore, album, artista, genere, testo, sunto); 
 		recensione = recensioniRepository.save(recensione);
+
+		// Creiamo l'evento CreatedRecensioneEvent e lo pubblichiamo
+		DomainEvent event = new CreatedRecensioneEvent(
+				recensione.getId(),
+				recensione.getRecensore(),
+				recensione.getAlbum(),
+				recensione.getArtista(),
+				recensione.getGenere(),
+				recensione.getTesto(),
+				recensione.getSunto()
+		);
+		messagePublisher.publish(event);
 		return recensione;
 	}
 
