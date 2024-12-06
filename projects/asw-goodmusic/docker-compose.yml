@@ -1,4 +1,8 @@
 services:
+  consul:
+    image: hashicorp/consul
+    ports:
+      - "8500:8500"
   kafka:
     image: docker.io/bitnami/kafka:3.8
     # lasciamo la porta aperta sull'host per consentire la creazione dei topic
@@ -32,6 +36,70 @@ services:
     volumes:
       - ./kafka_ui/:/etc/kafkaui/
 
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - consul
+
+  connessioni:
+    build: ./connessioni
+    depends_on:
+      - consul
+      - kafka
+      - connessionidb
+
+  connessionidb:
+    image: postgres
+    volumes:
+      - connessionidb_data:/var/lib/postgresql/data
+    environment:
+        POSTGRES_DB: connessioni
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+
+  recensioni:
+    build: ./recensioni
+    depends_on:
+      - consul
+      - kafka
+      - recensionidb
+
+  recensionidb:
+    image: postgres
+    volumes:
+      - recensionidb_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: recensioni
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  recensioni-seguite:
+    build: ./recensioni-seguite
+    depends_on:
+      - consul
+      - kafka
+      - recensioni-seguitedb
+
+  recensioni-seguitedb:
+    image: postgres
+    volumes:
+      - recensioni-seguitedb_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: recensioni-seguite
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
 volumes:
   kafka_data:
+    driver: local
+
+  connessionidb_data:
+    driver: local
+
+  recensionidb_data:
+    driver: local
+
+  recensioni-seguitedb_data:
     driver: local

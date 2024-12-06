@@ -16,7 +16,7 @@ public class RecensioniEventPublisherKafkaAdapter implements RecensioniEventPubl
     @Value("${asw.kafka.channel.out}")
     private String channel;
 
-    private Logger logger = Logger.getLogger(this.getClass().toString());
+    private final Logger logger = Logger.getLogger(this.getClass().toString());
 
     @Autowired
     private KafkaTemplate<String, DomainEvent> kafkaTemplate;
