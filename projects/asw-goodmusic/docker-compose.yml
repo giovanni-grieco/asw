@@ -35,6 +35,8 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka:9092"
     volumes:
       - ./kafka_ui/:/etc/kafkaui/
+    depends_on:
+      - kafka
 
   api-gateway:
     build: ./api-gateway
