@@ -1,13 +1,19 @@
 package asw.goodmusic.recensioniseguite.domain;
 
-import lombok.*; 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import lombok.*;
 
 /* Recensione (in formato breve) di un album scritta da un recensore. */ 
 @Data @NoArgsConstructor @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity
 public class RecensioneBreve implements Comparable<RecensioneBreve> {
 
 	/* id della recensione */
+	@Id
+	@GeneratedValue
 	@EqualsAndHashCode.Include
 	private Long id; 
 	/* chi ha scritto la recensione */ 
