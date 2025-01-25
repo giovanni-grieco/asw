@@ -19,16 +19,24 @@ public class ConnessioniInboundEventPortImpl implements ConnessioniInboundEventP
     @Override
     public void onEvent(DomainEvent event) {
         if(event instanceof CreatedConnessioneEvent createdConnessioneEvent){
-            connessioniService.createConnessione(
-                    createdConnessioneEvent.getId(),
-                    createdConnessioneEvent.getUtente(),
-                    createdConnessioneEvent.getSeguito(),
-                    createdConnessioneEvent.getRuolo()
-            );
+            this.onCreatedConnessione(createdConnessioneEvent);
         }else if(event instanceof DeletedConnessioneEvent deletedConnessioneEvent){
-            connessioniService.deleteConnessione(deletedConnessioneEvent.getId());
+            this.onDeletedConnessione(deletedConnessioneEvent);
         }else{
             logger.warning("Received unknown event type: " + event);
         }
+    }
+
+    private void onCreatedConnessione(CreatedConnessioneEvent event) {
+        connessioniService.createConnessione(
+                event.getId(),
+                event.getUtente(),
+                event.getSeguito(),
+                event.getRuolo()
+        );
+    }
+
+    private void onDeletedConnessione(DeletedConnessioneEvent event) {
+        connessioniService.deleteConnessione(event.getId());
     }
 }

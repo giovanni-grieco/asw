@@ -22,8 +22,14 @@ public class RecensioniSeguiteServiceLocalBasedImpl implements RecensioniSeguite
     public Collection<RecensioneBreve> getRecensioniSeguite(String utente) {
         List<Connessione> connessioni = new ArrayList<>(connessioneRepository.findAllByUtente(utente));
         List<RecensioneBreve> output = new ArrayList<>();
-        for(Connessione c: connessioni){
-            output.addAll(recensioneBreveRepository.findAllByArtistaOrRecensoreOrGenere(c.getSeguito(), c.getSeguito(), c.getSeguito()));
+        for(Connessione c:connessioni){
+            String ruolo = c.getRuolo();
+            String seguito = c.getSeguito();
+            switch (ruolo) {
+                case "ARTISTA" -> output.addAll(recensioneBreveRepository.findAllByArtista(seguito));
+                case "RECENSORE" -> output.addAll(recensioneBreveRepository.findAllByRecensore(seguito));
+                case "GENERE" -> output.addAll(recensioneBreveRepository.findAllByGenere(seguito));
+            }
         }
         return output;
     }

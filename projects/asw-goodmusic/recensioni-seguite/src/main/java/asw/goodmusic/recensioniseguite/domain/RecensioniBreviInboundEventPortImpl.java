@@ -18,16 +18,20 @@ public class RecensioniBreviInboundEventPortImpl implements RecensioniBreviInbou
     @Override
     public void onEvent(DomainEvent event) {
         if (event instanceof CreatedRecensioneEvent createdRecensioneEvent) {
-            recensioniService.createRecensioneBreve(
-                    createdRecensioneEvent.getId(),
-                    createdRecensioneEvent.getRecensore(),
-                    createdRecensioneEvent.getAlbum(),
-                    createdRecensioneEvent.getArtista(),
-                    createdRecensioneEvent.getGenere(),
-                    createdRecensioneEvent.getSunto()
-            );
+            this.onRecensioneCreated(createdRecensioneEvent);
         } else {
             logger.warning("Received unknown event type: " + event);
         }
+    }
+
+    private void onRecensioneCreated(CreatedRecensioneEvent event) {
+        recensioniService.createRecensioneBreve(
+                event.getId(),
+                event.getRecensore(),
+                event.getAlbum(),
+                event.getArtista(),
+                event.getGenere(),
+                event.getSunto()
+        );
     }
 }
