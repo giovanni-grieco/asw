@@ -1,0 +1,420 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: connessionidb-pvc
+spec:
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+          storage: 1Gi
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: recensionidb-pvc
+spec:
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+          storage: 1Gi
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: recensioni-seguitedb-pvc
+spec:
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+          storage: 1Gi
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: connessionidb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: goodmusic
+      service: connessionidb
+  template:
+    metadata:
+      labels:
+        app: goodmusic
+        service: connessionidb
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:latest
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: connessioni
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-storage
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: connessionidb-pvc
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recensionidb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: goodmusic
+      service: recensionidb
+  template:
+    metadata:
+      labels:
+        app: goodmusic
+        service: recensionidb
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:latest
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: recensioni
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-storage
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: recensionidb-pvc
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recensioni-seguitedb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: goodmusic
+      service: recensioni-seguitedb
+  template:
+    metadata:
+      labels:
+        app: goodmusic
+        service: recensioni-seguitedb
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:latest
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: recensioni-seguite
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-storage
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: recensioni-seguitedb-pvc
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: connessionidb-service
+spec:
+  selector:
+    app: postgres
+    service: connessionidb
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: recensionidb-service
+spec:
+  selector:
+    app: postgres
+    service: recensionidb
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: recensioni-seguitedb-service
+spec:
+  selector:
+    app: postgres
+    service: recensioni-seguitedb
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: connessioni
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+          app: goodmusic
+          service: connessioni
+    template:
+        metadata:
+          labels:
+            app: goodmusic
+            service: connessioni
+        spec:
+            containers:
+            - name: connessioni-container
+              image: aswroma3/goodmusic-connessioni-kube:2025-01
+              env:
+                - name: SPRING_PROFILES_ACTIVE
+                  value: connessioni
+              ports:
+                - containerPort: 8080
+              livenessProbe:
+                httpGet:
+                  path: /actuator/health
+                  port: 8080
+                periodSeconds: 5
+                failureThreshold: 3
+                initialDelaySeconds: 120
+              readinessProbe:
+                httpGet:
+                  path: /actuator/health
+                  port: 8080
+                periodSeconds: 10
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recensioni
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+          app: goodmusic
+          service: recensioni
+    template:
+        metadata:
+          labels:
+            app: goodmusic
+            service: recensioni
+        spec:
+            containers:
+            - name: recensioni-container
+              image: aswroma3/goodmusic-recensioni-kube:2025-01
+              env:
+                - name: SPRING_PROFILES_ACTIVE
+                  value: recensioni
+              ports:
+                - containerPort: 8080
+              livenessProbe:
+                httpGet:
+                  path: /actuator/health
+                  port: 8080
+                periodSeconds: 5
+                failureThreshold: 3
+                initialDelaySeconds: 120
+              readinessProbe:
+                  httpGet:
+                    path: /actuator/health
+                    port: 8080
+                  periodSeconds: 10
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recensioni-seguite
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+          app: goodmusic
+          service: recensioni-seguite
+    template:
+        metadata:
+          labels:
+            app: goodmusic
+            service: recensioni-seguite
+        spec:
+            containers:
+            - name: recensioni-container
+              image: aswroma3/goodmusic-recensioni-seguite-kube:2025-01
+              env:
+                - name: SPRING_PROFILES_ACTIVE
+                  value: recensioni-seguite
+              ports:
+                - containerPort: 8080
+              livenessProbe:
+                httpGet:
+                  path: /actuator/health
+                  port: 8080
+                periodSeconds: 5
+                failureThreshold: 3
+                initialDelaySeconds: 120
+              readinessProbe:
+                  httpGet:
+                    path: /actuator/health
+                    port: 8080
+                  periodSeconds: 10
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apigateway
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+          app: goodmusic
+          service: apigateway
+    template:
+        metadata:
+          labels:
+            app: goodmusic
+            service: apigateway
+        spec:
+            containers:
+            - name: api-gateway-container
+              image: aswroma3/goodmusic-apigateway-kube:2025-01
+              env:
+                - name: SPRING_PROFILES_ACTIVE
+                  value: apigateway
+              ports:
+                - containerPort: 8080
+              livenessProbe:
+                httpGet:
+                  path: /actuator/health
+                  port: 8080
+                periodSeconds: 5
+                failureThreshold: 3
+                initialDelaySeconds: 120
+              readinessProbe:
+                    httpGet:
+                      path: /actuator/health
+                      port: 8080
+                    periodSeconds: 10
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: connessioni
+spec:
+    selector:
+        app: goodmusic
+        service: connessioni
+    ports:
+      - protocol: TCP
+        port: 8080
+        targetPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: recensioni
+spec:
+    selector:
+        app: goodmusic
+        service: recensioni
+    ports:
+      - protocol: TCP
+        port: 8080
+        targetPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: recensioni-seguite
+spec:
+    selector:
+        app: goodmusic
+        service: recensioni-seguite
+    ports:
+      - protocol: TCP
+        port: 8080
+        targetPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: apigateway
+spec:
+    selector:
+        app: goodmusic
+        service: apigateway
+    type: NodePort
+    ports:
+      - protocol: TCP
+        port: 8080
+        targetPort: 8080
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: goodmusic
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: goodmusic.aswroma3.it
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: apigateway
+            port:
+              number: 8080

@@ -1,55 +1,19 @@
 services:
-  consul:
-    image: hashicorp/consul
-    ports:
-      - "8500:8500"
-  kafka:
-    image: docker.io/bitnami/kafka:3.8
-    # lasciamo la porta aperta sull'host per consentire la creazione dei topic
-    ports:
-      - "9092:9092"
-    volumes:
-      - "kafka_data:/bitnami"
-    environment:
-      # KRaft settings
-      - KAFKA_CFG_NODE_ID=0
-      - KAFKA_CFG_PROCESS_ROLES=controller,broker
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
-      # Listeners
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://:9092
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
-      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
-      # Other settings 
-      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
-      - KAFKA_CFG_NUM_PARTITIONS=4
-  kafka-ui:
-    container_name: kafka-ui
-    image: provectuslabs/kafka-ui:latest
-    ports:
-      - "8089:8080"
-    environment:
-      DYNAMIC_CONFIG_ENABLED: 'true'
-      KAFKA_CLUSTERS_0_NAME: "local"
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka:9092"
-    volumes:
-      - ./kafka_ui/:/etc/kafkaui/
-    depends_on:
-      - kafka
 
   api-gateway:
-    build: ./api-gateway
-    ports:
-      - "8080:8080"
-    depends_on:
-      - consul
+    build:
+        context: ./api-gateway
+        tags:
+          - "aswroma3/goodmusic-apigateway-kube:2025-01"
+          - "aswroma3/goodmusic-apigateway-kube:latest"
 
   connessioni:
-    build: ./connessioni
+    build:
+      context: ./connessioni
+      tags:
+          - "aswroma3/goodmusic-connessioni-kube:2025-01"
+          - "aswroma3/goodmusic-connessioni-kube:latest"
     depends_on:
-      - consul
-      - kafka
       - connessionidb
 
   connessionidb:
@@ -62,10 +26,12 @@ services:
         POSTGRES_PASSWORD: postgres
 
   recensioni:
-    build: ./recensioni
+    build:
+        context: ./recensioni
+        tags:
+            - "aswroma3/goodmusic-recensioni-kube:2025-01"
+            - "aswroma3/goodmusic-recensioni-kube:latest"
     depends_on:
-      - consul
-      - kafka
       - recensionidb
 
   recensionidb:
@@ -78,10 +44,12 @@ services:
       POSTGRES_PASSWORD: postgres
 
   recensioni-seguite:
-    build: ./recensioni-seguite
+    build:
+        context: ./recensioni-seguite
+        tags:
+            - "aswroma3/goodmusic-recensioni-seguite-kube:2025-01"
+            - "aswroma3/goodmusic-recensioni-seguite-kube:latest"
     depends_on:
-      - consul
-      - kafka
       - recensioni-seguitedb
 
   recensioni-seguitedb:
