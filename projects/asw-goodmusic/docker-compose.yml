@@ -51,6 +51,8 @@ services:
       - consul
       - kafka
       - connessionidb
+    deploy:
+      replicas: 2
 
   connessionidb:
     image: postgres
@@ -67,6 +69,8 @@ services:
       - consul
       - kafka
       - recensionidb
+    deploy:
+      replicas: 2
 
   recensionidb:
     image: postgres
@@ -83,6 +87,8 @@ services:
       - consul
       - kafka
       - recensioni-seguitedb
+    deploy:
+      replicas: 2
 
   recensioni-seguitedb:
     image: postgres
