@@ -408,7 +408,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: goodmusic.biancc.it
+  - host: goodmusic.aswroma3.it
     http:
       paths:
       - pathType: Prefix

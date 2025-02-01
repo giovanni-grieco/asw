@@ -2,7 +2,7 @@
 
 # per creare le immagini docker dell'applicazione e salvarle su docker hub 
 
-# prerequisito: build java 
+# prerequisito: gradle build
 #               docker login su docker hub 
 
 # docker compose build
