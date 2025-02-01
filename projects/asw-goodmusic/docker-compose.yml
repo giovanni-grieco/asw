@@ -1,18 +1,17 @@
 services:
-
   api-gateway:
     build:
         context: ./api-gateway
         tags:
-          - "aswroma3/goodmusic-apigateway-kube:2025-01"
-          - "aswroma3/goodmusic-apigateway-kube:latest"
+          - "biancc/goodmusic-apigateway-kube:2025-01"
+          - "biancc/goodmusic-apigateway-kube:latest"
 
   connessioni:
     build:
       context: ./connessioni
       tags:
-          - "aswroma3/goodmusic-connessioni-kube:2025-01"
-          - "aswroma3/goodmusic-connessioni-kube:latest"
+          - "biancc/goodmusic-connessioni-kube:2025-01"
+          - "biancc/goodmusic-connessioni-kube:latest"
     depends_on:
       - connessionidb
 
@@ -29,8 +28,8 @@ services:
     build:
         context: ./recensioni
         tags:
-            - "aswroma3/goodmusic-recensioni-kube:2025-01"
-            - "aswroma3/goodmusic-recensioni-kube:latest"
+            - "biancc/goodmusic-recensioni-kube:2025-01"
+            - "biancc/goodmusic-recensioni-kube:latest"
     depends_on:
       - recensionidb
 
@@ -47,8 +46,8 @@ services:
     build:
         context: ./recensioni-seguite
         tags:
-            - "aswroma3/goodmusic-recensioni-seguite-kube:2025-01"
-            - "aswroma3/goodmusic-recensioni-seguite-kube:latest"
+            - "biancc/goodmusic-recensioni-seguite-kube:2025-01"
+            - "biancc/goodmusic-recensioni-seguite-kube:latest"
     depends_on:
       - recensioni-seguitedb
 

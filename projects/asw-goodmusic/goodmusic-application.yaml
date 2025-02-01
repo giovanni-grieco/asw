@@ -208,7 +208,7 @@ spec:
         spec:
             containers:
             - name: connessioni-container
-              image: aswroma3/goodmusic-connessioni-kube:2025-01
+              image: biancc/goodmusic-connessioni-kube:2025-01
               env:
                 - name: SPRING_PROFILES_ACTIVE
                   value: connessioni
@@ -246,7 +246,7 @@ spec:
         spec:
             containers:
             - name: recensioni-container
-              image: aswroma3/goodmusic-recensioni-kube:2025-01
+              image: biancc/goodmusic-recensioni-kube:2025-01
               env:
                 - name: SPRING_PROFILES_ACTIVE
                   value: recensioni
@@ -284,7 +284,7 @@ spec:
         spec:
             containers:
             - name: recensioni-container
-              image: aswroma3/goodmusic-recensioni-seguite-kube:2025-01
+              image: biancc/goodmusic-recensioni-seguite-kube:2025-01
               env:
                 - name: SPRING_PROFILES_ACTIVE
                   value: recensioni-seguite
@@ -322,7 +322,7 @@ spec:
         spec:
             containers:
             - name: api-gateway-container
-              image: aswroma3/goodmusic-apigateway-kube:2025-01
+              image: biancc/goodmusic-apigateway-kube:2025-01
               env:
                 - name: SPRING_PROFILES_ACTIVE
                   value: apigateway
@@ -408,7 +408,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: goodmusic.aswroma3.it
+  - host: goodmusic.biancc.it
     http:
       paths:
       - pathType: Prefix
