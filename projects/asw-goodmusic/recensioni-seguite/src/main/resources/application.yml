@@ -2,14 +2,19 @@
 --- 
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: kafka:9092
     consumer:
       group-id: goodmusic-group
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
   datasource:
-    url: jdbc:postgresql://localhost:5434/recensioni-seguite
+    url: jdbc:postgresql://recensioni-seguitedb:5432/recensioni-seguite
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -24,7 +29,7 @@ spring:
     name: recensioni-seguite
   cloud:
     consul:
-      host: localhost
+      host: consul
       port: 8500
       discovery: 
         instanceId: ${spring.application.name}-${spring.cloud.client.hostname}-${random.value}
@@ -48,3 +53,10 @@ server:
 #spring.jpa.show-sql: true
 # disable OSIV
 spring.jpa.open-in-view: false
+
+asw:
+  kafka:
+    channels:
+        in:
+          recensioni: recensioni
+          connessioni: connessioni

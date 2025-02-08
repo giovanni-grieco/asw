@@ -1,12 +1,18 @@
 package asw.goodmusic.recensioniseguite.domain;
 
-import lombok.*; 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import lombok.*;
 
 /* Connessione tra un utente e un seguito (con un ruolo). */  
 @Data @NoArgsConstructor @AllArgsConstructor
+@Entity
 public class Connessione {
 
-	/* id della connessione */ 
+	/* id della connessione */
+	@Id @GeneratedValue
+	@EqualsAndHashCode.Include
 	private Long id; 
 	/* utente che segue */ 
 	private String utente; 

@@ -1,18 +1,19 @@
 #!/bin/bash
+#If one of the parameters $1 or $2 is -c or --clean then
 
-# Script per avviare l'applicazione GoodMusic
+if [[ "$1" == "-h" || "$1" == "--help" || "$2" == "-h" || "$2" == "--help" ]]; then
+    echo "Usage: $0 [-c|--clean] [-b|--build]"
+    echo "  -c, --clean  Clean the project"
+    echo "  -b, --build  Build the project"
+    exit 0
+fi
 
-echo Running GOODMUSIC 
+if [[ "$1" == "-c" || "$1" == "--clean" || "$2" == "-c" || "$2" == "--clean" ]]; then
+    gradle clean
+fi
 
-docker run -d --hostname localhost --name asw-consul --network host docker.io/hashicorp/consul
-docker run -d --hostname localhost --name recensioni-DB -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=recensioni -d postgres
-docker run -d --hostname localhost --name connessioni-DB -p 5433:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=connessioni -d postgres
-docker run -d --hostname localhost --name recensioni-seguite-DB -p 5434:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=recensioni-seguite -d postgres
+if [[ "$1" == "-b" || "$1" == "--build" || "$2" == "-b" || "$2" == "--build"  ]]; then
+    gradle build
+fi
 
-
-sleep 4
-
-java -Xms64m -Xmx128m -jar recensioni/build/libs/recensioni.jar &
-java -Xms64m -Xmx128m -jar connessioni/build/libs/connessioni.jar &
-java -Xms64m -Xmx128m -jar recensioni-seguite/build/libs/recensioni-seguite.jar &
-java -Xms64m -Xmx128m -jar api-gateway/build/libs/api-gateway.jar &
+docker compose up -d --build

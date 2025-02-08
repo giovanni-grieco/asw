@@ -17,7 +17,7 @@ configurations {
 
 dependencies {
   implementation project(':connessioni-api')
-
+  implementation project(':common-api')
   implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'org.springframework.cloud:spring-cloud-starter'
   implementation 'org.springframework.cloud:spring-cloud-starter-consul-discovery'
@@ -31,6 +31,7 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
   //implementation 'org.hsqldb:hsqldb'
   implementation 'org.postgresql:postgresql'
+  implementation 'org.springframework.kafka:spring-kafka'
   compileOnly 'org.projectlombok:lombok' 
   annotationProcessor 'org.projectlombok:lombok'
 

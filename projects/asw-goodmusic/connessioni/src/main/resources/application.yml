@@ -2,12 +2,12 @@
 --- 
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: kafka:9092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   datasource:
-    url: jdbc:postgresql://localhost:5433/connessioni
+    url: jdbc:postgresql://connessionidb:5432/connessioni
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -22,7 +22,7 @@ spring:
     name: connessioni
   cloud:
     consul:
-      host: localhost
+      host: consul
       port: 8500
       discovery: 
         instanceId: ${spring.application.name}-${spring.cloud.client.hostname}-${random.value}
@@ -46,3 +46,8 @@ server:
 #spring.jpa.show-sql: true
 # disable OSIV
 spring.jpa.open-in-view: false
+
+asw:
+  kafka:
+    channel:
+      out: connessioni

@@ -5,7 +5,7 @@ Progetto del corso di Analisi e progettazione del software per l'anno accademico
 
 ## Descrizione di questo progetto 
 
-Questo progetto contiene il il codice di *GoodMusic*, 
+Questo progetto contiene il codice di *GoodMusic*, 
 un semplice social network per la condivisione di recensioni di album musicali.  
 Gli utenti del sistema possono scrivere e pubblicare delle recensioni. 
 Possono poi seguire le recensioni scritte da specifici recensori e quelle degli album realizzati da specifici artisti.  

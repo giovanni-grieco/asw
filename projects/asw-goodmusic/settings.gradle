@@ -4,5 +4,8 @@ include 'connessioni'
 include 'connessioni-api'
 include 'recensioni-seguite'
 include 'api-gateway'
-
+include 'common-api'
 rootProject.name = 'asw-goodmusic'
+
+
+
