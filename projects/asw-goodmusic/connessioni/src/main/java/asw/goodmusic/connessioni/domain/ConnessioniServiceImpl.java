@@ -1,8 +1,8 @@
 package asw.goodmusic.connessioni.domain;
 
 import asw.goodmusic.common.api.messaging.DomainEvent;
-import asw.goodmusic.connessioni.api.messaging.CreatedConnessioneEvent;
-import asw.goodmusic.connessioni.api.messaging.DeletedConnessioneEvent;
+import asw.goodmusic.connessioni.api.messaging.ConnessioneCreatedEvent;
+import asw.goodmusic.connessioni.api.messaging.ConnessioneDeletedEvent;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,7 +23,7 @@ public class ConnessioniServiceImpl implements ConnessioniService {
 		try {
 			connessione = connessioniRepository.save(connessione);
 
-			DomainEvent event= new CreatedConnessioneEvent(
+			DomainEvent event= new ConnessioneCreatedEvent(
 					connessione.getId(),
 					connessione.getUtente(),
 					connessione.getSeguito(),
@@ -80,7 +80,7 @@ public class ConnessioniServiceImpl implements ConnessioniService {
 		if (connessione!=null) {
 
 			connessioniRepository.delete(connessione);
-			DomainEvent event = new DeletedConnessioneEvent(
+			DomainEvent event = new ConnessioneDeletedEvent(
 					connessione.getId(),
 					connessione.getUtente(),
 					connessione.getSeguito(),

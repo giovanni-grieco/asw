@@ -1,8 +1,8 @@
 package asw.goodmusic.recensioniseguite.domain;
 
 import asw.goodmusic.common.api.messaging.DomainEvent;
-import asw.goodmusic.connessioni.api.messaging.CreatedConnessioneEvent;
-import asw.goodmusic.connessioni.api.messaging.DeletedConnessioneEvent;
+import asw.goodmusic.connessioni.api.messaging.ConnessioneCreatedEvent;
+import asw.goodmusic.connessioni.api.messaging.ConnessioneDeletedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,16 +18,16 @@ public class ConnessioniInboundEventPortImpl implements ConnessioniInboundEventP
 
     @Override
     public void onEvent(DomainEvent event) {
-        if(event instanceof CreatedConnessioneEvent createdConnessioneEvent){
-            this.onCreatedConnessione(createdConnessioneEvent);
-        }else if(event instanceof DeletedConnessioneEvent deletedConnessioneEvent){
-            this.onDeletedConnessione(deletedConnessioneEvent);
+        if(event instanceof ConnessioneCreatedEvent connessioneCreatedEvent){
+            this.onCreatedConnessione(connessioneCreatedEvent);
+        }else if(event instanceof ConnessioneDeletedEvent connessioneDeletedEvent){
+            this.onDeletedConnessione(connessioneDeletedEvent);
         }else{
             logger.warning("Received unknown event type: " + event);
         }
     }
 
-    private void onCreatedConnessione(CreatedConnessioneEvent event) {
+    private void onCreatedConnessione(ConnessioneCreatedEvent event) {
         connessioniService.createConnessione(
                 event.getId(),
                 event.getUtente(),
@@ -36,7 +36,7 @@ public class ConnessioniInboundEventPortImpl implements ConnessioniInboundEventP
         );
     }
 
-    private void onDeletedConnessione(DeletedConnessioneEvent event) {
+    private void onDeletedConnessione(ConnessioneDeletedEvent event) {
         connessioniService.deleteConnessione(event.getId());
     }
 }

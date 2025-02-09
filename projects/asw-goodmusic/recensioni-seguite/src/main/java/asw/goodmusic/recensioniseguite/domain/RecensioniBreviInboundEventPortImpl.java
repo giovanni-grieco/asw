@@ -1,7 +1,7 @@
 package asw.goodmusic.recensioniseguite.domain;
 
 import asw.goodmusic.common.api.messaging.DomainEvent;
-import asw.goodmusic.recensioni.api.messaging.CreatedRecensioneEvent;
+import asw.goodmusic.recensioni.api.messaging.RecensioneCreatedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,14 +17,14 @@ public class RecensioniBreviInboundEventPortImpl implements RecensioniBreviInbou
 
     @Override
     public void onEvent(DomainEvent event) {
-        if (event instanceof CreatedRecensioneEvent createdRecensioneEvent) {
-            this.onRecensioneCreated(createdRecensioneEvent);
+        if (event instanceof RecensioneCreatedEvent recensioneCreatedEvent) {
+            this.onRecensioneCreated(recensioneCreatedEvent);
         } else {
             logger.warning("Received unknown event type: " + event);
         }
     }
 
-    private void onRecensioneCreated(CreatedRecensioneEvent event) {
+    private void onRecensioneCreated(RecensioneCreatedEvent event) {
         recensioniService.createRecensioneBreve(
                 event.getId(),
                 event.getRecensore(),

@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data @NoArgsConstructor @AllArgsConstructor
-public class CreatedRecensioneEvent implements DomainEvent{
+public class RecensioneCreatedEvent implements DomainEvent{
         private Long id;
         private String recensore;
         private String album;

@@ -1,7 +1,7 @@
 package asw.goodmusic.recensioni.domain;
 
 import asw.goodmusic.common.api.messaging.DomainEvent;
-import asw.goodmusic.recensioni.api.messaging.CreatedRecensioneEvent;
+import asw.goodmusic.recensioni.api.messaging.RecensioneCreatedEvent;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,7 +26,7 @@ public class RecensioniServiceImpl implements RecensioniService {
 		recensione = recensioniRepository.save(recensione);
 
 		// Creiamo l'evento CreatedRecensioneEvent e lo pubblichiamo
-		DomainEvent event = new CreatedRecensioneEvent(
+		DomainEvent event = new RecensioneCreatedEvent(
 				recensione.getId(),
 				recensione.getRecensore(),
 				recensione.getAlbum(),
